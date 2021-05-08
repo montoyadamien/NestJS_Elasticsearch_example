@@ -1,0 +1,61 @@
+# machine documentation : https://circleci.com/docs/2.0/executor-types/#using-machine
+
+version: 2.1
+jobs:
+  build:
+    machine:
+      image: ubuntu-2004:202104-01 # start a vm that contains Docker v20.10.6 and Docker Compose v1.29.1
+
+    environment:
+      PLANT_PATH: ./plant
+
+    steps:
+      - checkout
+
+      - run:
+          name: Docker checks
+          command: |
+            set -x
+            docker --version
+            docker-compose --version
+
+      - run:
+          name: Start elastic search container
+          command: |
+            set -x
+            sudo docker-compose up -d elasticsearch
+
+      - run:
+          name: Waiting for elastic container to be ready
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z localhost 9200 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for Elastic && exit 1
+
+      - run:
+          name: Start the whole app
+          command: |
+            set -x
+            sudo docker-compose up -d
+
+      - run:
+          name: Install node modules
+          command: |
+            cd $PLANT_PATH
+            npm install
+
+      - run:
+          name: Run unit tests
+          command: |
+            cd $PLANT_PATH
+            npm run test
+
+      - run:
+          name: Run end-to-end tests
+          command: |
+            cd $PLANT_PATH
+            npm run test:e2e

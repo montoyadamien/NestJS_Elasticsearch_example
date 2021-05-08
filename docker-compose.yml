@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  plant:
+    build: ./plant
+    image: garden/plant
+    container_name: plant_service
+    environment:
+      - PORT=3000
+      - ELASTIC_URL=http://elasticsearch:9200
+    ports:
+      - 3000:3000
+    volumes:
+      - ./plant/src/:/app/src/ # FOR HOT RELOAD ONLY
+    depends_on:
+      - elasticsearch
+    networks:
+      - esnet
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.12.1
+    container_name: elasticsearch
+    environment:
+      - node.name=es01
+      - cluster.name=es-docker-cluster
+      - discovery.type=single-node
+#    volumes:
+#      - ./elasticsearch:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+      - 9300:9300 #allow communication between elastic search instances in multiple cluster
+    networks:
+      - esnet
+
+networks:
+  esnet:
+    driver: bridge
+
