@@ -3,6 +3,7 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { AppRepository } from '../src/app.repository';
+import {Plant} from "../src/models/plant.model";
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -35,11 +36,12 @@ describe('AppController (e2e)', () => {
     return request(app.getHttpServer()).get('/plant/').expect(200).expect('Ok');
   });
 
-  it('/plant/:plantName (GET)', () => {
-    return request(app.getHttpServer())
+  it('/plant/:plantName (GET)', async () => {
+    const response = await request(app.getHttpServer())
       .get('/plant/Sunflower')
-      .expect(200)
-      .expect('[{"id":1,"name":"Sunflower"}]');
+      .expect(200);
+    const parsed: Plant[] = response.body;
+    expect(parsed[0].name).toBe('Sunflower');
   });
 
   afterEach(async () => {

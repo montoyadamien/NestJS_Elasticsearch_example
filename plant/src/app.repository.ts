@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Plant } from './models/plant.model';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 
@@ -20,15 +20,17 @@ export class AppRepository {
     return null;
   }
 
-  public async getPlants(plantName): Promise<Plant[]> {
+  public async getPlants(search): Promise<Plant[]> {
     const { body } = await this.elasticsearchService.search({
       index: this.INDEX,
       body: {
         query: {
-          match: {
-            name: plantName,
+          multi_match: {
+            query: search,
+            fields: ['name^2', 'color'], // ^ allows to weight the field
           },
         },
+        _source: ['id', 'name'], // only return id and name fields
       },
     });
     const results: Plant[] = [];

@@ -11,9 +11,9 @@ export class AppController {
     return this.appService.getOk();
   }
 
-  @Get(':plantName')
-  async getPlants(@Param('plantName') plantName: string): Promise<Plant[]> {
-    return await this.appService.getPlants(plantName);
+  @Get(':search')
+  async getPlants(@Param('search') search: string): Promise<Plant[]> {
+    return await this.appService.getPlants(search);
   }
 
   @Post()

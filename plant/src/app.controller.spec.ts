@@ -21,6 +21,7 @@ describe('AppController', () => {
     await appRepository.storePlant({
       id: 1,
       name: 'Sunflower',
+      color: 'yellow',
     });
     await appRepository.storePlant({
       id: 2,

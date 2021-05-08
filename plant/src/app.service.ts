@@ -14,7 +14,7 @@ export class AppService {
     return this.appRepository.storePlant(plant);
   }
 
-  async getPlants(plantName: string): Promise<Plant[]> {
-    return this.appRepository.getPlants(plantName);
+  async getPlants(search: string): Promise<Plant[]> {
+    return this.appRepository.getPlants(search);
   }
 }
