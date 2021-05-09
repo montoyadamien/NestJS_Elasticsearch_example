@@ -27,20 +27,21 @@ jobs:
             docker-compose up -d es01 es02
 
       - run:
-          name: Waiting for elastic container to be started
+          name: Waiting for elastic container to be ready
           command: |
+            sleep 5
+            sudo apt-get install -y jq
             for i in `seq 1 10`;
             do
-              nc -z localhost 9200 && echo Success && exit 0
-              echo -n .
-              sleep 1
+                cluster_flag=$(curl --silent -X GET http://localhost:9200/_cluster/health | jq -r ".status")
+            	if [ "$cluster_flag" = "green" ]; then
+            		echo Success
+            		exit 0
+            	fi
+            	sleep 2
             done
-            echo Failed waiting for Elastic && exit 1
-
-      # since launching two elastic nodes is really long wait for a minute
-      - run:
-          name: Waiting for elastic containers to be ready
-          command: sleep 60
+            echo Failed
+            exit 1
 
       - run:
           name: Checking elastic cluster
