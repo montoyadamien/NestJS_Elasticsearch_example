@@ -43,7 +43,6 @@ describe('AppController', () => {
   describe('getPlant', () => {
     it('should return "Sunflower" plant', async (done) => {
       const plants = await appController.getPlants('Sunflower');
-      console.log(plants);
       expect(plants[0].name).toBe('Sunflower');
       done();
     });

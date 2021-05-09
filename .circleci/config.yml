@@ -23,7 +23,7 @@ jobs:
           name: Start elastic search container
           command: |
             set -x
-            sudo docker-compose up -d elasticsearch
+            sudo docker-compose up -d es01 es02
 
       - run:
           name: Waiting for elastic container to be ready
