@@ -37,12 +37,6 @@ jobs:
             echo Failed waiting for Elastic && exit 1
 
       - run:
-          name: Start the whole app
-          command: |
-            set -x
-            sudo docker-compose up -d plant
-
-      - run:
           name: Install node modules
           command: |
             cd $PLANT_PATH

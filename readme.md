@@ -14,7 +14,7 @@ To check the cluster you can also make a GET request on `http://localhost:9200/_
 
 ## Issues
 
-If you get the issue `vm.max_map_count [65530] is too low, increase to at least [262144]` when running elasticsearch sing docker on windows with WSL do the following steps :  
+If you get the issue `vm.max_map_count [65530] is too low, increase to at least [262144]` when running elasticsearch using docker on Windows with WSL do the following steps :  
 - Open a windows cmd with admin rights
 - run `wsl -d docker-desktop`
 - run `sysctl -w vm.max_map_count=262144`
