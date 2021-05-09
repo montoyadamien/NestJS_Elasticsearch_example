@@ -39,7 +39,7 @@ jobs:
           command: |
             set -x
             set +e
-            sleep 10
+            sleep 20
             for i in `seq 1 10`;
             do
             	cluster_flag=$(curl --silent --show-error -X GET http://localhost:9200/_cluster/health | jq -r ".status")
@@ -47,7 +47,7 @@ jobs:
             		echo Success
             		exit 0
             	fi
-            	sleep 2
+            	sleep 5
             done
             echo Failed
             exit 1
