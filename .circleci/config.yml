@@ -23,6 +23,7 @@ jobs:
           name: Start elastic search container
           command: |
             set -x
+            sudo sysctl -w vm.max_map_count=262144
             docker-compose up es01 es02
 
       - run:
