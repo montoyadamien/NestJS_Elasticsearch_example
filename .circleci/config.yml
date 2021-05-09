@@ -30,6 +30,7 @@ jobs:
           name: Waiting for elastic container to be ready
           command: |
             sleep 5
+            sudo apt-get update -y
             sudo apt-get install -y jq
             for i in `seq 1 10`;
             do
