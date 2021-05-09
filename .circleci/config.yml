@@ -40,7 +40,7 @@ jobs:
           name: Start the whole app
           command: |
             set -x
-            sudo docker-compose up -d
+            sudo docker-compose up -d plant
 
       - run:
           name: Install node modules
