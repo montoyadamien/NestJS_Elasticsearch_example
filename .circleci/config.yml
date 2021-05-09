@@ -13,6 +13,13 @@ jobs:
       - checkout
 
       - run:
+          name: Installing dependencies
+          command: |
+            set -x
+            sudo apt-get update -y
+            sudo apt-get install -y jq
+
+      - run:
           name: Docker checks
           command: |
             set -x
@@ -29,9 +36,8 @@ jobs:
       - run:
           name: Waiting for elastic container to be ready
           command: |
+            set -x
             sleep 5
-            sudo apt-get update -y
-            sudo apt-get install -y jq
             for i in `seq 1 10`;
             do
                 cluster_flag=$(curl --silent -X GET http://localhost:9200/_cluster/health | jq -r ".status")
@@ -45,25 +51,29 @@ jobs:
             exit 1
 
       - run:
-          name: Checking elastic cluster
+          name: Elasticsearch cluster checks
           command: |
+            set -x
             curl -X GET http://localhost:9200
             curl -X GET http://localhost:9200/_cluster/health
 
       - run:
           name: Install node modules
           command: |
+            set -x
             cd $PLANT_PATH
             npm install
 
       - run:
           name: Run unit tests
           command: |
+            set -x
             cd $PLANT_PATH
             npm run test
 
       - run:
           name: Run end-to-end tests
           command: |
+            set -x
             cd $PLANT_PATH
             npm run test:e2e
