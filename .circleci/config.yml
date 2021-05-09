@@ -26,7 +26,7 @@ jobs:
             sudo docker-compose up -d es01 es02
 
       - run:
-          name: Waiting for elastic container to be ready
+          name: Waiting for elastic container to be started
           command: |
             for i in `seq 1 10`;
             do
@@ -35,6 +35,10 @@ jobs:
               sleep 1
             done
             echo Failed waiting for Elastic && exit 1
+
+      - run:
+          name: Waiting for elastic containers to be ready
+          command: sleep 10
 
       - run:
           name: Install node modules
