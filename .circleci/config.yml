@@ -24,7 +24,7 @@ jobs:
           command: |
             set -x
             sudo sysctl -w vm.max_map_count=262144
-            docker-compose up es01 es02
+            docker-compose up -d es01 es02
 
       - run:
           name: Waiting for elastic container to be started
