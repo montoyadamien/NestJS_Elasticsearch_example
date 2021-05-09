@@ -18,6 +18,7 @@ jobs:
             set -x
             sudo apt-get update -y
             sudo apt-get install -y jq
+            jq --version
 
       - run:
           name: Docker checks
@@ -37,10 +38,11 @@ jobs:
           name: Waiting for elastic container to be ready
           command: |
             set -x
-            sleep 5
+            set +e
+            sleep 10
             for i in `seq 1 10`;
             do
-                cluster_flag=$(curl --silent -X GET http://localhost:9200/_cluster/health | jq -r ".status")
+            	cluster_flag=$(curl --silent --show-error -X GET http://localhost:9200/_cluster/health | jq -r ".status")
             	if [ "$cluster_flag" = "green" ]; then
             		echo Success
             		exit 0
