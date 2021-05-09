@@ -37,9 +37,10 @@ jobs:
             done
             echo Failed waiting for Elastic && exit 1
 
+      # since launching two elastic nodes is really long wait for a minute
       - run:
           name: Waiting for elastic containers to be ready
-          command: sleep 10
+          command: sleep 60
 
       - run:
           name: Checking elastic cluster
